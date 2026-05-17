@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+
+# OS junk
+.DS_Store
+
+# Streamlit — keep config.toml, never commit secrets
+.streamlit/secrets.toml
+
+# Jupyter
+.ipynb_checkpoints/

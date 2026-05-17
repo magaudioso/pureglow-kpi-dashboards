@@ -1,0 +1,345 @@
+date,segment,segmented,sends,delivered,opens,clicks
+2025-12-01,All contacts (batch),False,18513,18050,2922,361
+2025-12-01,Cart Abandoners,True,667,652,215,36
+2025-12-01,VIP Loyalists,True,317,312,131,23
+2025-12-02,Lapsed Customers,True,1117,1104,291,42
+2025-12-02,VIP Loyalists,True,324,318,128,24
+2025-12-03,New Leads,True,1622,1589,507,82
+2025-12-04,Cart Abandoners,True,645,638,210,39
+2025-12-04,First-Time Buyers,True,804,788,231,36
+2025-12-04,VIP Loyalists,True,353,347,138,25
+2025-12-05,All contacts (batch),False,16227,15821,2751,309
+2025-12-05,New Leads,True,1478,1457,460,74
+2025-12-06,Cart Abandoners,True,629,616,210,35
+2025-12-06,First-Time Buyers,True,869,852,246,40
+2025-12-07,Lapsed Customers,True,985,965,260,37
+2025-12-07,VIP Loyalists,True,340,334,140,25
+2025-12-09,All contacts (batch),False,16131,15728,2732,304
+2025-12-09,Lapsed Customers,True,980,965,245,38
+2025-12-09,VIP Loyalists,True,402,398,163,30
+2025-12-10,All contacts (batch),False,17817,17372,2889,351
+2025-12-10,Cart Abandoners,True,543,536,185,33
+2025-12-10,First-Time Buyers,True,921,903,263,41
+2025-12-10,Lapsed Customers,True,1207,1180,304,45
+2025-12-11,Lapsed Customers,True,1006,987,269,40
+2025-12-11,New Leads,True,1613,1585,485,81
+2025-12-12,Cart Abandoners,True,651,635,214,36
+2025-12-12,First-Time Buyers,True,1039,1028,324,51
+2025-12-13,Lapsed Customers,True,1264,1240,315,48
+2025-12-14,First-Time Buyers,True,896,881,269,41
+2025-12-14,Lapsed Customers,True,1059,1032,282,42
+2025-12-15,Lapsed Customers,True,1264,1231,325,48
+2025-12-16,Lapsed Customers,True,970,959,265,39
+2025-12-16,New Leads,True,1635,1599,498,83
+2025-12-17,All contacts (batch),False,18616,18151,3068,365
+2025-12-17,VIP Loyalists,True,370,363,143,28
+2025-12-18,Cart Abandoners,True,600,588,196,34
+2025-12-18,First-Time Buyers,True,939,916,275,44
+2025-12-18,Lapsed Customers,True,1268,1255,335,51
+2025-12-18,VIP Loyalists,True,314,309,129,22
+2025-12-20,All contacts (batch),False,15855,15459,2611,315
+2025-12-20,Cart Abandoners,True,608,593,198,34
+2025-12-20,Lapsed Customers,True,1211,1184,307,45
+2025-12-20,VIP Loyalists,True,339,336,142,23
+2025-12-21,VIP Loyalists,True,319,311,130,24
+2025-12-22,Lapsed Customers,True,973,953,242,35
+2025-12-22,VIP Loyalists,True,341,335,138,24
+2025-12-23,All contacts (batch),False,18331,17873,3121,362
+2025-12-23,Lapsed Customers,True,1021,1000,254,41
+2025-12-23,VIP Loyalists,True,317,313,125,24
+2025-12-24,Lapsed Customers,True,1230,1207,314,48
+2025-12-24,VIP Loyalists,True,355,346,137,24
+2025-12-25,All contacts (batch),False,16554,16140,2840,353
+2025-12-25,VIP Loyalists,True,353,349,149,25
+2025-12-26,All contacts (batch),False,15877,15480,2615,337
+2025-12-26,Cart Abandoners,True,664,653,210,40
+2025-12-26,First-Time Buyers,True,971,948,301,44
+2025-12-26,Lapsed Customers,True,1171,1148,313,48
+2025-12-27,All contacts (batch),False,15767,15373,2686,342
+2025-12-27,First-Time Buyers,True,860,847,251,39
+2025-12-27,New Leads,True,1383,1360,411,73
+2025-12-27,VIP Loyalists,True,319,313,126,24
+2025-12-28,All contacts (batch),False,15890,15493,2572,341
+2025-12-28,Cart Abandoners,True,566,556,179,32
+2025-12-28,First-Time Buyers,True,853,834,260,40
+2025-12-28,Lapsed Customers,True,1049,1025,273,39
+2025-12-29,First-Time Buyers,True,905,894,263,45
+2025-12-30,First-Time Buyers,True,825,814,244,39
+2025-12-30,VIP Loyalists,True,390,380,160,27
+2025-12-31,Cart Abandoners,True,663,654,213,39
+2025-12-31,New Leads,True,1714,1685,519,92
+2026-01-01,VIP Loyalists,True,380,372,151,27
+2026-01-02,First-Time Buyers,True,1025,1011,317,51
+2026-01-02,Lapsed Customers,True,1138,1122,291,45
+2026-01-02,New Leads,True,1461,1425,453,71
+2026-01-03,All contacts (batch),False,17304,16871,2814,340
+2026-01-03,First-Time Buyers,True,986,961,293,48
+2026-01-04,All contacts (batch),False,15621,15230,2539,343
+2026-01-04,First-Time Buyers,True,931,908,282,45
+2026-01-04,Lapsed Customers,True,1092,1072,275,44
+2026-01-05,All contacts (batch),False,16046,15645,2599,339
+2026-01-05,New Leads,True,1591,1561,514,80
+2026-01-06,All contacts (batch),False,17184,16754,3051,348
+2026-01-06,Cart Abandoners,True,705,696,236,41
+2026-01-07,All contacts (batch),False,16492,16080,2791,337
+2026-01-07,Cart Abandoners,True,572,558,197,36
+2026-01-07,New Leads,True,1382,1355,420,71
+2026-01-07,VIP Loyalists,True,412,408,167,30
+2026-01-08,Cart Abandoners,True,642,628,202,37
+2026-01-08,First-Time Buyers,True,854,842,261,42
+2026-01-08,Lapsed Customers,True,996,972,259,40
+2026-01-08,New Leads,True,1550,1526,477,77
+2026-01-09,First-Time Buyers,True,1085,1061,319,51
+2026-01-09,Lapsed Customers,True,1225,1209,315,48
+2026-01-10,Cart Abandoners,True,705,687,225,40
+2026-01-11,New Leads,True,1603,1570,511,82
+2026-01-12,First-Time Buyers,True,894,882,284,45
+2026-01-12,Lapsed Customers,True,1164,1149,307,45
+2026-01-12,VIP Loyalists,True,423,413,181,29
+2026-01-14,Cart Abandoners,True,571,565,199,35
+2026-01-14,Lapsed Customers,True,1013,999,279,42
+2026-01-15,All contacts (batch),False,14009,13659,2322,308
+2026-01-15,First-Time Buyers,True,911,888,260,43
+2026-01-15,VIP Loyalists,True,350,342,146,27
+2026-01-17,Lapsed Customers,True,1134,1121,295,46
+2026-01-18,Cart Abandoners,True,655,648,218,41
+2026-01-18,First-Time Buyers,True,838,825,256,39
+2026-01-18,New Leads,True,1489,1455,466,74
+2026-01-19,New Leads,True,1737,1695,520,88
+2026-01-19,VIP Loyalists,True,388,379,163,29
+2026-01-20,First-Time Buyers,True,871,856,271,43
+2026-01-21,First-Time Buyers,True,995,974,296,50
+2026-01-21,Lapsed Customers,True,1001,981,271,43
+2026-01-22,Cart Abandoners,True,672,658,223,41
+2026-01-23,Cart Abandoners,True,653,637,223,38
+2026-01-23,New Leads,True,1439,1423,436,79
+2026-01-23,VIP Loyalists,True,404,395,162,32
+2026-01-24,VIP Loyalists,True,369,360,145,28
+2026-01-25,Cart Abandoners,True,737,718,247,47
+2026-01-25,Lapsed Customers,True,1101,1074,303,47
+2026-01-25,New Leads,True,1872,1843,585,100
+2026-01-25,VIP Loyalists,True,376,370,160,28
+2026-01-26,First-Time Buyers,True,979,967,300,51
+2026-01-26,Lapsed Customers,True,1228,1204,336,51
+2026-01-28,New Leads,True,1624,1587,501,82
+2026-01-28,VIP Loyalists,True,430,423,185,32
+2026-01-29,All contacts (batch),False,15769,15375,2683,355
+2026-01-29,First-Time Buyers,True,900,883,274,45
+2026-01-29,Lapsed Customers,True,1234,1217,345,52
+2026-01-29,New Leads,True,1857,1831,567,97
+2026-01-29,VIP Loyalists,True,395,385,172,29
+2026-01-31,Cart Abandoners,True,649,633,213,38
+2026-01-31,Lapsed Customers,True,1111,1099,302,45
+2026-01-31,New Leads,True,1754,1711,575,92
+2026-02-01,All contacts (batch),False,14013,13663,2341,307
+2026-02-01,Lapsed Customers,True,1006,989,285,40
+2026-02-01,New Leads,True,1830,1783,585,91
+2026-02-01,VIP Loyalists,True,428,419,172,31
+2026-02-02,All contacts (batch),False,14886,14514,2511,342
+2026-02-02,Cart Abandoners,True,692,684,231,43
+2026-02-02,New Leads,True,1807,1768,579,92
+2026-02-03,All contacts (batch),False,13320,12987,2426,312
+2026-02-04,Lapsed Customers,True,1041,1015,269,43
+2026-02-04,VIP Loyalists,True,429,423,182,34
+2026-02-05,First-Time Buyers,True,938,920,276,48
+2026-02-05,VIP Loyalists,True,438,432,184,35
+2026-02-06,First-Time Buyers,True,1000,982,295,49
+2026-02-07,First-Time Buyers,True,888,872,260,45
+2026-02-07,Lapsed Customers,True,1303,1285,365,51
+2026-02-07,VIP Loyalists,True,385,380,168,31
+2026-02-08,Lapsed Customers,True,1194,1179,341,50
+2026-02-08,New Leads,True,1695,1664,566,95
+2026-02-09,First-Time Buyers,True,1123,1111,355,54
+2026-02-09,Lapsed Customers,True,1220,1194,319,50
+2026-02-09,New Leads,True,1575,1536,499,85
+2026-02-10,VIP Loyalists,True,413,407,182,32
+2026-02-11,Cart Abandoners,True,637,630,221,42
+2026-02-11,Lapsed Customers,True,1261,1232,351,55
+2026-02-11,New Leads,True,1652,1619,502,92
+2026-02-12,Cart Abandoners,True,720,702,250,46
+2026-02-12,New Leads,True,1656,1626,539,89
+2026-02-13,All contacts (batch),False,15127,14749,2672,323
+2026-02-13,First-Time Buyers,True,1022,1005,300,53
+2026-02-13,Lapsed Customers,True,1214,1199,340,51
+2026-02-13,VIP Loyalists,True,355,349,156,26
+2026-02-14,All contacts (batch),False,13408,13073,2308,312
+2026-02-14,First-Time Buyers,True,1142,1113,362,59
+2026-02-14,VIP Loyalists,True,453,445,194,35
+2026-02-15,Cart Abandoners,True,796,783,269,51
+2026-02-15,Lapsed Customers,True,1023,1011,276,43
+2026-02-15,VIP Loyalists,True,369,363,149,29
+2026-02-16,All contacts (batch),False,13603,13263,2525,310
+2026-02-16,Lapsed Customers,True,1129,1110,305,49
+2026-02-17,First-Time Buyers,True,1086,1058,328,54
+2026-02-17,Lapsed Customers,True,1113,1101,310,45
+2026-02-18,First-Time Buyers,True,878,861,268,46
+2026-02-19,All contacts (batch),False,13381,13046,2516,298
+2026-02-19,Cart Abandoners,True,753,744,248,50
+2026-02-19,VIP Loyalists,True,418,408,170,33
+2026-02-20,All contacts (batch),False,13044,12718,2405,285
+2026-02-20,First-Time Buyers,True,1073,1055,316,57
+2026-02-21,Cart Abandoners,True,626,614,222,39
+2026-02-21,Lapsed Customers,True,1246,1218,346,54
+2026-02-22,Cart Abandoners,True,754,741,254,50
+2026-02-22,First-Time Buyers,True,1118,1096,357,57
+2026-02-23,Lapsed Customers,True,1211,1181,320,48
+2026-02-23,New Leads,True,1834,1807,596,104
+2026-02-23,VIP Loyalists,True,412,405,169,31
+2026-02-24,All contacts (batch),False,12207,11902,2179,297
+2026-02-24,Cart Abandoners,True,798,779,264,52
+2026-02-24,Lapsed Customers,True,1215,1191,340,50
+2026-02-24,VIP Loyalists,True,459,452,195,34
+2026-02-25,VIP Loyalists,True,365,361,162,29
+2026-02-26,Cart Abandoners,True,687,674,239,45
+2026-02-26,First-Time Buyers,True,1041,1024,330,52
+2026-02-27,New Leads,True,1870,1842,598,101
+2026-02-27,VIP Loyalists,True,387,382,163,29
+2026-02-28,All contacts (batch),False,13621,13280,2401,324
+2026-02-28,New Leads,True,1781,1760,552,102
+2026-02-28,VIP Loyalists,True,392,383,157,30
+2026-03-01,All contacts (batch),False,12727,12409,2294,293
+2026-03-01,Lapsed Customers,True,1056,1039,298,46
+2026-03-01,VIP Loyalists,True,424,414,179,34
+2026-03-02,Cart Abandoners,True,697,688,242,43
+2026-03-02,First-Time Buyers,True,1132,1114,339,59
+2026-03-03,Cart Abandoners,True,666,654,222,44
+2026-03-04,All contacts (batch),False,13405,13070,2551,304
+2026-03-04,Cart Abandoners,True,799,780,283,50
+2026-03-04,First-Time Buyers,True,1156,1130,349,55
+2026-03-04,VIP Loyalists,True,385,377,169,28
+2026-03-05,All contacts (batch),False,12808,12488,2249,306
+2026-03-05,Cart Abandoners,True,790,777,265,53
+2026-03-05,First-Time Buyers,True,1110,1091,357,57
+2026-03-06,Lapsed Customers,True,1123,1098,313,46
+2026-03-06,VIP Loyalists,True,459,452,199,38
+2026-03-07,All contacts (batch),False,11995,11695,2172,266
+2026-03-07,Lapsed Customers,True,1295,1273,356,58
+2026-03-07,New Leads,True,1902,1862,631,99
+2026-03-08,Cart Abandoners,True,740,724,264,47
+2026-03-08,First-Time Buyers,True,1074,1056,329,54
+2026-03-08,New Leads,True,1864,1817,602,96
+2026-03-09,Lapsed Customers,True,1269,1253,353,54
+2026-03-09,New Leads,True,1765,1744,574,95
+2026-03-09,VIP Loyalists,True,472,465,194,35
+2026-03-10,Cart Abandoners,True,670,658,231,42
+2026-03-10,First-Time Buyers,True,985,973,304,49
+2026-03-10,VIP Loyalists,True,461,456,199,38
+2026-03-11,First-Time Buyers,True,908,889,293,47
+2026-03-11,New Leads,True,1787,1742,605,95
+2026-03-11,VIP Loyalists,True,460,451,192,37
+2026-03-12,All contacts (batch),False,12522,12209,2302,314
+2026-03-12,First-Time Buyers,True,959,942,298,50
+2026-03-12,Lapsed Customers,True,1037,1021,295,43
+2026-03-14,Cart Abandoners,True,702,685,229,48
+2026-03-14,Lapsed Customers,True,1154,1135,336,52
+2026-03-15,First-Time Buyers,True,991,972,296,50
+2026-03-15,Lapsed Customers,True,1076,1065,318,47
+2026-03-16,First-Time Buyers,True,1010,999,312,53
+2026-03-16,Lapsed Customers,True,1164,1138,309,52
+2026-03-16,VIP Loyalists,True,412,403,179,33
+2026-03-17,First-Time Buyers,True,1190,1163,360,58
+2026-03-17,New Leads,True,1556,1535,507,83
+2026-03-18,First-Time Buyers,True,1015,991,303,52
+2026-03-18,New Leads,True,1568,1535,524,88
+2026-03-18,VIP Loyalists,True,418,409,182,34
+2026-03-19,New Leads,True,1570,1540,538,90
+2026-03-19,VIP Loyalists,True,436,427,192,32
+2026-03-20,First-Time Buyers,True,1149,1127,370,62
+2026-03-20,VIP Loyalists,True,400,390,165,33
+2026-03-21,First-Time Buyers,True,1214,1193,380,59
+2026-03-21,New Leads,True,1997,1962,683,106
+2026-03-23,First-Time Buyers,True,993,978,300,52
+2026-03-24,All contacts (batch),False,10835,10564,2004,264
+2026-03-24,New Leads,True,1876,1846,614,101
+2026-03-24,VIP Loyalists,True,372,366,155,29
+2026-03-25,Cart Abandoners,True,728,715,251,47
+2026-03-25,First-Time Buyers,True,931,912,297,45
+2026-03-25,New Leads,True,1835,1808,626,108
+2026-03-26,Lapsed Customers,True,1117,1105,316,52
+2026-03-26,VIP Loyalists,True,453,444,191,35
+2026-03-27,Lapsed Customers,True,1186,1164,342,51
+2026-03-28,First-Time Buyers,True,941,927,296,47
+2026-03-28,New Leads,True,2020,1976,661,110
+2026-03-28,VIP Loyalists,True,383,376,173,29
+2026-03-29,All contacts (batch),False,12057,11756,2197,311
+2026-03-29,Cart Abandoners,True,795,778,270,53
+2026-03-29,First-Time Buyers,True,943,924,307,47
+2026-03-30,Cart Abandoners,True,734,717,246,48
+2026-03-31,Cart Abandoners,True,832,822,303,53
+2026-03-31,First-Time Buyers,True,1179,1151,389,62
+2026-03-31,Lapsed Customers,True,1229,1204,343,54
+2026-03-31,VIP Loyalists,True,490,482,212,39
+2026-04-01,Lapsed Customers,True,1059,1047,296,47
+2026-04-01,VIP Loyalists,True,392,382,160,30
+2026-04-03,Cart Abandoners,True,775,762,275,51
+2026-04-03,First-Time Buyers,True,1018,1000,333,53
+2026-04-03,Lapsed Customers,True,1165,1141,324,54
+2026-04-03,New Leads,True,1725,1703,557,99
+2026-04-04,First-Time Buyers,True,1134,1118,374,57
+2026-04-04,New Leads,True,2093,2052,698,115
+2026-04-04,VIP Loyalists,True,456,447,206,37
+2026-04-05,Cart Abandoners,True,771,751,264,51
+2026-04-05,New Leads,True,1597,1557,508,93
+2026-04-05,VIP Loyalists,True,419,415,180,35
+2026-04-07,Cart Abandoners,True,711,701,245,49
+2026-04-07,Lapsed Customers,True,1383,1355,404,65
+2026-04-07,New Leads,True,2095,2050,677,124
+2026-04-08,First-Time Buyers,True,1043,1024,330,56
+2026-04-08,Lapsed Customers,True,1353,1333,388,59
+2026-04-10,New Leads,True,2096,2061,685,117
+2026-04-10,VIP Loyalists,True,444,439,193,35
+2026-04-11,New Leads,True,2001,1953,647,116
+2026-04-11,VIP Loyalists,True,434,428,196,34
+2026-04-12,All contacts (batch),False,10005,9755,1960,248
+2026-04-13,First-Time Buyers,True,1224,1196,402,65
+2026-04-13,Lapsed Customers,True,1240,1214,351,57
+2026-04-14,Cart Abandoners,True,686,669,242,48
+2026-04-14,First-Time Buyers,True,1109,1092,344,59
+2026-04-15,Cart Abandoners,True,810,793,292,55
+2026-04-15,VIP Loyalists,True,427,417,183,36
+2026-04-16,Lapsed Customers,True,1189,1160,334,57
+2026-04-17,Cart Abandoners,True,721,705,261,46
+2026-04-18,Cart Abandoners,True,819,798,284,51
+2026-04-18,Lapsed Customers,True,1106,1080,312,47
+2026-04-19,Lapsed Customers,True,1244,1214,344,59
+2026-04-19,VIP Loyalists,True,449,440,199,37
+2026-04-20,Lapsed Customers,True,1159,1132,324,50
+2026-04-20,New Leads,True,2107,2085,728,117
+2026-04-20,VIP Loyalists,True,432,422,181,36
+2026-04-22,First-Time Buyers,True,1253,1231,417,67
+2026-04-22,Lapsed Customers,True,1218,1196,361,54
+2026-04-22,VIP Loyalists,True,465,460,204,37
+2026-04-24,Cart Abandoners,True,802,791,283,54
+2026-04-24,New Leads,True,1635,1598,551,93
+2026-04-24,VIP Loyalists,True,423,414,179,34
+2026-04-26,Cart Abandoners,True,840,825,300,56
+2026-04-26,VIP Loyalists,True,521,509,224,41
+2026-04-27,Cart Abandoners,True,824,811,284,58
+2026-04-27,VIP Loyalists,True,400,390,166,31
+2026-04-28,Lapsed Customers,True,1279,1251,381,61
+2026-04-29,Lapsed Customers,True,1326,1295,391,63
+2026-04-30,First-Time Buyers,True,1228,1202,413,68
+2026-04-30,VIP Loyalists,True,514,505,223,40
+2026-05-01,Cart Abandoners,True,703,692,240,45
+2026-05-01,First-Time Buyers,True,1058,1047,350,58
+2026-05-01,Lapsed Customers,True,1066,1053,317,52
+2026-05-01,New Leads,True,2133,2086,728,126
+2026-05-02,Cart Abandoners,True,857,844,303,61
+2026-05-02,First-Time Buyers,True,1046,1025,320,55
+2026-05-02,New Leads,True,1880,1836,639,109
+2026-05-02,VIP Loyalists,True,435,430,200,35
+2026-05-03,Lapsed Customers,True,1170,1140,339,55
+2026-05-04,VIP Loyalists,True,445,438,191,39
+2026-05-05,Cart Abandoners,True,813,793,279,55
+2026-05-05,VIP Loyalists,True,409,404,173,33
+2026-05-06,Cart Abandoners,True,837,825,305,60
+2026-05-06,VIP Loyalists,True,474,462,211,40
+2026-05-08,Cart Abandoners,True,769,760,268,53
+2026-05-08,First-Time Buyers,True,1035,1019,323,53
+2026-05-09,Cart Abandoners,True,748,740,266,49
+2026-05-10,First-Time Buyers,True,1134,1120,377,62
+2026-05-10,Lapsed Customers,True,1395,1372,416,64
+2026-05-11,Lapsed Customers,True,1236,1222,354,61
+2026-05-11,VIP Loyalists,True,481,471,205,38
+2026-05-12,New Leads,True,1852,1831,655,113
+2026-05-14,Lapsed Customers,True,1146,1119,341,52

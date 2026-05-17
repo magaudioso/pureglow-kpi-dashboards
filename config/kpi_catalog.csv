@@ -1,0 +1,21 @@
+kpi_id,kpi_name,audience,indicator_type,owner,maps_to,target,target_direction,unit,new_metric,description
+LEAD_REVENUE_RR,Online revenue (annualised run-rate),leadership,lagging,CEO / Maya Chen,O1 - KR 1.1,8400000.0,higher,currency,No,"Trailing-90-day online revenue, annualised. Target completes the CEO's doubling mandate."
+LEAD_ROAS,Blended ROAS,leadership,lagging,Maya Chen,O1 - KR 1.2,4.0,higher,ratio,No,Total online revenue divided by total ad spend.
+LEAD_CPA,Blended CPA (cost per order),leadership,lagging,Maya Chen,O2 - KR 2.3,15.0,lower,currency,No,Total ad spend divided by all orders (paid + organic + returning).
+LEAD_CLV,Customer lifetime value (CLV index),leadership,lagging,Maya Chen,O3 - KR 3.2,108.0,higher,index,No,CLV indexed to the phase start (=100). Target is +8% over the phase.
+LEAD_RET_REV,Returning-customer revenue share,leadership,lagging,Sofia Reyes,O3 - KR 3.3,0.4,higher,pct,Yes,Share of revenue from customers placing their 2nd+ order. NEW metric.
+LEAD_D30_PAYBACK,Day-30 gross-profit payback on CAC,leadership,lagging,CEO / Maya Chen,O1 - KR 1.3,1.0,higher,ratio,Yes,"For new customers acquired in the period, gross profit earned in their first 30 days divided by total acquisition spend. Hormozi's self-funding-growth threshold (1.0x means a cohort pays back its CAC in gross profit within 30 days). NEW metric."
+LEAD_PIPE_COV,Pipeline coverage ratio,leadership,leading,Maya Chen,O1 - KR 1.1,1.5,higher,ratio,Yes,Open pipeline value divided by the monthly revenue target. NEW metric.
+LEAD_L2C,Lead-to-customer conversion rate,leadership,leading,Sofia Reyes,O2 - KR 2.2,0.07,higher,pct,No,New customers divided by new leads. Leadership's revenue early-warning.
+LEAD_NEWCUST_PACE,Weekly new-customer run-rate vs plan,leadership,leading,Maya Chen,O1 - KR 1.1,1.0,higher,pct,No,Actual weekly new customers divided by the planned weekly pace.
+LEAD_CRM_SPEND,% ad spend on CRM-verified keywords,leadership,leading,Derek Osei,O1 - KR 1.2,0.7,higher,pct,Yes,Share of paid spend on keywords confirmed profitable in the CRM. NEW metric.
+MKT_CPA,Cost per acquisition (CPA) - paid search,marketing,lagging,Derek Osei,O2 - KR 2.3,15.0,lower,currency,No,Paid-search spend divided by GCLID-attributed orders.
+MKT_ROAS,Return on ad spend (ROAS) - paid search,marketing,lagging,Derek Osei,O1 - KR 1.2,4.0,higher,ratio,No,GCLID-attributed revenue divided by paid-search spend.
+MKT_LP_CONV,Landing page conversion rate,marketing,lagging,Derek Osei,O2 - KR 2.1,0.045,higher,pct,No,Landing-page conversions divided by landing-page sessions (GA4).
+MKT_L2C,Lead-to-customer conversion rate,marketing,lagging,Sofia Reyes,O2 - KR 2.2,0.07,higher,pct,No,New customers divided by new leads (HubSpot lifecycle stages).
+MKT_CART,Cart recovery rate,marketing,lagging,Sofia Reyes,O2 - KR 2.2,0.2,higher,pct,No,Recovered carts divided by abandoned carts.
+MKT_CPC,Cost per click (CPC),marketing,leading,Derek Osei,O2 - KR 2.3,1.2,lower,currency,No,Paid-search cost divided by clicks.
+MKT_CTR,Click-through rate (CTR) - paid search,marketing,leading,Derek Osei,O2 - KR 2.1,0.045,higher,pct,No,Paid-search clicks divided by impressions.
+MKT_HIGH_INTENT,% ad spend on high-intent (Tier 1 & 2) keywords,marketing,leading,Derek Osei,O1 - KR 1.2,0.75,higher,pct,Yes,Share of paid spend on Tier 1 + Tier 2 keywords. NEW metric.
+MKT_EMAIL_OPEN,Email open rate,marketing,leading,Sofia Reyes,O2 - KR 2.2,0.28,higher,pct,No,Email opens divided by emails delivered.
+MKT_EMAIL_CTR,Email click-through rate,marketing,leading,Sofia Reyes,O2 - KR 2.2,0.045,higher,pct,No,Email clicks divided by emails delivered.
