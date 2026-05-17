@@ -1,11 +1,13 @@
 # PureGlow KPI Dashboards — Python prototype
 
+Made for MBAP_481, Case Western Weatherhead School of Management.
+
 Two role-specific KPI dashboards for the PureGlow case study, built in Python
 from the OKR → KPI alignment in `PureGlow_KPI_OKR_Alignment.docx`.
 
 - **Leadership dashboard** — CEO + leadership team. Sparse, outcome-level, with a
   **preset reporting-period dropdown** (this month / last month / this quarter /
-  YTD / full phase).
+  full phase).
 - **Marketing Execution dashboard** — Maya Chen, Derek Osei, Sofia Reyes. Denser,
   channel-level, with a **fully custom date-range picker + granularity toggle**
   and function tabs (Paid/SEM, Email/CRM, Landing pages).
