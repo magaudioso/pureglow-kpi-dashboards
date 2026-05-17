@@ -22,7 +22,8 @@ import kpi_lib
 import theme
 
 P = theme.MARKETING
-FREQ = {"Daily": "D", "Weekly": "W", "Monthly": "M"}
+FREQ = {"Daily": "D", "Weekly": "W", "Monthly": "ME"}
+PERIOD_FREQ = {"D": "D", "W": "W", "ME": "M"}
 
 st.set_page_config(page_title="PureGlow - Marketing Execution Dashboard",
                    page_icon="*", layout="wide",
@@ -156,7 +157,7 @@ with tab_email:
     with a:
         f = fig(f"Open rate by segment ({gran.lower()})")
         eg = e.copy()
-        eg["bucket"] = eg["date"].dt.to_period(freq).dt.to_timestamp()
+        eg["bucket"] = eg["date"].dt.to_period(PERIOD_FREQ[freq]).dt.to_timestamp()
         for s in sorted(eg["segment"].unique()):
             sub = (eg[eg["segment"] == s].groupby("bucket", as_index=False)
                    [["opens", "delivered"]].sum())
