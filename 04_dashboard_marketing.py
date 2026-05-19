@@ -24,7 +24,10 @@ import kpi_lib
 import theme
 
 P = theme.MARKETING
-FREQ = {"Daily": "D", "Weekly": "W", "Monthly": "M"}
+# resample aliases (pandas 3 removed "M"; month-end is "ME")
+FREQ = {"Daily": "D", "Weekly": "W", "Monthly": "ME"}
+# Period freq differs from the resample alias for months ("ME" -> "M")
+PERIOD_FREQ = {"D": "D", "W": "W", "ME": "M"}
 ASSETS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
 ICON = Image.open(os.path.join(ASSETS, "pureglow_icon.png"))
 LOGO = os.path.join(ASSETS, "pureglow_logo.png")
@@ -167,7 +170,7 @@ with tab_email:
     with a:
         f = fig(f"Open rate by segment ({gran.lower()})")
         eg = e.copy()
-        eg["bucket"] = eg["date"].dt.to_period(freq).dt.to_timestamp()
+        eg["bucket"] = eg["date"].dt.to_period(PERIOD_FREQ[freq]).dt.to_timestamp()
         for s in sorted(eg["segment"].unique()):
             sub = (eg[eg["segment"] == s].groupby("bucket", as_index=False)
                    [["opens", "delivered"]].sum())
