@@ -52,7 +52,9 @@ with mcol:
     st.markdown("<div class='pg-title'>Marketing Execution Dashboard</div>",
                 unsafe_allow_html=True)
 with dcol:
-    default_start = max(data_min, data_max - dt.timedelta(days=29))
+    # Default to the full implementation window so the case 12-month outcome
+    # values (ROAS 4.3x, CPA $16.50, etc.) are the landing view.
+    default_start = data_min
     rng = st.date_input("Date range", value=(default_start, data_max),
                         min_value=data_min, max_value=data_max,
                         label_visibility="collapsed")

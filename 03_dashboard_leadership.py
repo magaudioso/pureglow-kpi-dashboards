@@ -43,8 +43,13 @@ with mid:
                 unsafe_allow_html=True)
 with right:
     presets = kpi_lib.leadership_presets(data_min, data_max)
-    choice = st.selectbox("Period", list(presets.keys()),
-                          index=0, label_visibility="collapsed")
+    # Default to the Full implementation period so the case 12-month outcome
+    # values (revenue $7.1M, ROAS 4.3x, L2C 5.6%, etc.) are the landing view.
+    _preset_keys = list(presets.keys())
+    _default_idx = next((i for i, k in enumerate(_preset_keys)
+                         if "full" in k.lower()), len(_preset_keys) - 1)
+    choice = st.selectbox("Period", _preset_keys,
+                          index=_default_idx, label_visibility="collapsed")
     start, end = presets[choice]
 st.markdown("<hr class='pg-rule'>", unsafe_allow_html=True)
 
