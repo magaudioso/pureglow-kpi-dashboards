@@ -29,8 +29,8 @@ CONFIG = {
     "phase_start":              dt.date(2025, 4, 1),    # implementation kick-off
     "phase_end":                dt.date(2026, 4, 30),   # case's 12-month outcome point
     "data_through":             dt.date(2026, 4, 30),
-    "revenue_runrate_target":   7_100_000,   # case 12-month outcome (annualised)
-    "monthly_revenue_target":   592_000,     # = $7.1M / 12
+    "revenue_runrate_target":   8_400_000,   # case doubling-mandate goal (annualised)
+    "monthly_revenue_target":   700_000,     # = $8.4M / 12
     "weekly_new_customer_plan": 1_200,       # implied by the run-rate target
     "gross_margin":             0.70,        # CLV / Day-30 payback assumption
     "runrate_window_days":      90,          # trailing window for the run-rate
@@ -48,11 +48,12 @@ CATALOG = [
          direction="higher", unit="currency", is_new=False,
          desc="Trailing-90-day online revenue, annualised. Year-1 milestone toward "
               "the CEO's 18-month doubling mandate."),
-    dict(id="LEAD_ROAS", name="Blended ROAS",
+    dict(id="LEAD_ROAS", name="Return on ad spend (ROAS)",
          audience="leadership", indicator="lagging", owner="Maya Chen",
          maps_to="O1 - KR 1.2", target=4.0, direction="higher", unit="ratio",
          is_new=False,
-         desc="Total online revenue divided by total ad spend. Case target floor."),
+         desc="Paid-search revenue divided by paid-search ad spend (actual "
+              "ROAS, not blended). Case target floor 4.0x."),
     dict(id="LEAD_CLV", name="Customer lifetime value (CLV index)",
          audience="leadership", indicator="lagging", owner="Maya Chen",
          maps_to="O3 - KR 3.3", target=115.0, direction="higher", unit="index",
@@ -286,7 +287,7 @@ def _raw_kpi_values(df_period, df_full):
     v = {}
     # ---- leadership lagging (5)
     v["LEAD_REVENUE_RR"] = _runrate(df_full, end)
-    v["LEAD_ROAS"] = _safe_div(p["revenue"], p["ad_spend"])
+    v["LEAD_ROAS"] = _safe_div(p["paid_revenue"], p["ad_spend"])  # actual ROAS
     base_clv = df_full.sort_values("date")["clv_value"].head(7).mean()
     end_clv = df_period.sort_values("date")["clv_value"].tail(7).mean()
     v["LEAD_CLV"] = _safe_div(end_clv, base_clv) * 100.0

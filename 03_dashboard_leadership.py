@@ -146,9 +146,9 @@ with c2:
     st.plotly_chart(fig, width="stretch", theme=None)
 
 with c3:
-    fig = base_fig("Blended ROAS (weekly)")
+    fig = base_fig("ROAS (weekly)")
     fig.add_trace(go.Scatter(x=ts_roas["date"], y=ts_roas["value"], mode="lines",
-                             line=dict(color=P["accent"], width=2.5), name="Blended ROAS"))
+                             line=dict(color=P["accent"], width=2.5), name="ROAS"))
     fig.add_hline(y=4.0, line=dict(color=theme.STATUS["on_track"]["color"], dash="dash", width=1.5),
                   annotation_text="Target 4.0x", annotation_font_size=10)
     fig.update_yaxes(ticksuffix="x")
