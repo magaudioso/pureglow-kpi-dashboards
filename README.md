@@ -26,6 +26,11 @@ streamlit run 03_dashboard_leadership.py
 streamlit run 04_dashboard_marketing.py
 ```
 
+> **Note:** `data/raw/` is **not** tracked in git (it is regenerable and bulky).
+> On a fresh clone, run `01_generate_sample_data.py` before `02_build_kpi_tables.py`.
+> The Streamlit apps only need the committed `data/processed/` fact tables, so
+> cloud deploys work without `data/raw/`.
+
 Scripts 01, 02 and 05 run in order. The two dashboards can then be launched any
 time — they just read `data/processed/`.
 
