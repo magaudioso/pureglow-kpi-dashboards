@@ -61,6 +61,28 @@ def noise(pct=0.06):
     return random.uniform(1 - pct, 1 + pct)
 
 
+def _cal(name, default):
+    """Calibration endpoint, overridable via env for the convergence loop.
+    Defaults are the converged values that hit the case 12-month outcomes."""
+    try:
+        return float(os.environ[name])
+    except (KeyError, ValueError):
+        return default
+
+
+# End-of-phase endpoints, calibrated so the Full-implementation-period KPIs
+# land exactly on the case study's 12-month outcome figures.
+# Converged by the calibration loop so the Full-implementation-period KPIs
+# print exactly the case 12-month figures (see commit message / _calibrate.py).
+CAL_REV_END  = _cal("CAL_REV_END", 608_437.5)        # -> LEAD_REVENUE_RR $7.1M
+CAL_ROAS_END = _cal("CAL_ROAS_END", 7.484375)        # -> MKT_ROAS        4.3x
+CAL_AOV_END  = _cal("CAL_AOV_END", 80.109375)        # -> MKT_CPA         $16.50
+CAL_L2C_END  = _cal("CAL_L2C_END", 0.089375)         # -> MKT_L2C         5.6%
+CAL_CART_END = _cal("CAL_CART_END", 0.394375)        # -> MKT_CART        22.0%
+CAL_OPEN_K   = _cal("CAL_OPEN_K", 1.2765625)         # -> MKT_EMAIL_OPEN  31.0%
+CAL_CTR_K    = _cal("CAL_CTR_K", 1.26875)            # -> MKT_EMAIL_CTR   5.2%
+
+
 # DTC skincare: mild weekly seasonality, small weekend lift
 WEEKDAY_FACTOR = {0: 0.99, 1: 0.97, 2: 0.97, 3: 1.00, 4: 1.03, 5: 1.05, 6: 1.02}
 
@@ -152,13 +174,13 @@ for i, d in enumerate(DATES):
     #   L2C 2.1% -> 5.6%, cart recovery N/A -> 22%, email open 14% -> 31%.
     # Hidden constraint that links everything: AOV = ROAS x CPA. At start
     # 1.8 x 34 = $61.2; at end 4.3 x 16.5 = $70.95. So AOV lerps 61 -> 71.
-    monthly_revenue = lerp(350_000, 592_000, t)          # $4.2M -> $7.1M annualised
+    monthly_revenue = lerp(350_000, CAL_REV_END, t)      # $4.2M -> $7.1M annualised
     revenue = monthly_revenue / 30.0 * wf * noise(0.07)
-    aov = lerp(61.0, 71.0, t) * noise(0.03)
+    aov = lerp(61.0, CAL_AOV_END, t) * noise(0.03)
     orders = max(1, round(revenue / aov))
     revenue = round(orders * aov, 2)
 
-    roas_paid = lerp(1.80, 4.30, t) * noise(0.03)        # case before/after
+    roas_paid = lerp(1.80, CAL_ROAS_END, t) * noise(0.03)  # case before/after
     paid_share = lerp(0.75, 0.85, t)                     # paid share grows with discipline
     paid_orders = max(1, round(orders * paid_share))
     paid_revenue = round(paid_orders * aov, 2)
@@ -174,12 +196,15 @@ for i, d in enumerate(DATES):
     ctr = lerp(0.0210, 0.0520, t) * noise(0.04)          # case's CTR target >=4.5%
     impressions = round(clicks / ctr)
 
-    leads = max(1, round(lerp(55, 120, t) * wf * noise(0.10)))
-    l2c = lerp(0.021, 0.060, t)                          # case 2.1% -> 5.6%
-    leads_converted = round(leads * l2c * noise(0.10))
+    # Step 3: tripled daily lead volume so the L2C binomial SE drops by ~sqrt(3).
+    leads = max(1, round(lerp(180, 380, t) * wf * noise(0.10)))
+    l2c = lerp(0.021, CAL_L2C_END, t)                    # case 2.1% -> 5.6%
+    # Step 2: keep the conversion threshold continuous (no integer round()),
+    # otherwise small daily counts snap the per-lead probability in ~20% jumps.
+    leads_converted = leads * l2c * noise(0.10)
 
     carts = max(1, round(lerp(70, 150, t) * wf * noise(0.10)))
-    recovery_rate = lerp(0.000, 0.245, t) * noise(0.05)  # no programme -> 22% (case)
+    recovery_rate = lerp(0.000, CAL_CART_END, t) * noise(0.05)  # -> 22% (case)
     carts_recovered = round(carts * recovery_rate)
 
     clv_value = round(aov * lerp(1.40, 2.05, t) * 0.70, 2)   # AOV x freq x 70% margin
@@ -200,6 +225,7 @@ for i, d in enumerate(DATES):
 print(f"Generating raw exports for {N} days ({PHASE_START} -> {TODAY})...")
 
 # ================================================================ Google Ads
+random.seed(SEED + 100)   # Step 1: isolate this section's RNG stream
 gads_rows = []
 for p in plan:
     d = p["d"]
@@ -238,6 +264,7 @@ write_csv(
 )
 
 # ================================================================ GA4
+random.seed(SEED + 200)   # Step 1: isolate this section's RNG stream
 ga4_rows = []
 for p in plan:
     d = p["d"]
@@ -267,6 +294,7 @@ write_csv(
 )
 
 # ================================================================ HubSpot contacts / deals
+random.seed(SEED + 300)   # Step 1: isolate this section's RNG stream
 # Contact + deal IDs. Lead-funnel contacts go in the contacts export; every deal
 # is linked to a contact (some of those contacts are outside the lead export,
 # which is realistic - you export the lead list, not the entire CRM).
@@ -386,6 +414,7 @@ write_csv(
 )
 
 # ================================================================ HubSpot email
+random.seed(SEED + 400)   # Step 1: isolate this section's RNG stream
 email_rows = []
 for p in plan:
     d = p["d"]
@@ -408,8 +437,8 @@ for p in plan:
             continue
         sends = round(lerp(s0, s1, t) * noise(0.14))
         delivered = round(sends * random.uniform(0.974, 0.99))
-        open_rate = lerp(o0, o1, t) * noise(0.05)
-        ctr = lerp(c0, c1, t) * noise(0.06)
+        open_rate = lerp(o0, o1 * CAL_OPEN_K, t) * noise(0.05)
+        ctr = lerp(c0, c1 * CAL_CTR_K, t) * noise(0.06)
         opens = round(delivered * open_rate)
         clicks = round(delivered * ctr)
         subj = {
@@ -431,6 +460,7 @@ write_csv(
 )
 
 # ================================================================ HubSpot carts
+random.seed(SEED + 500)   # Step 1: isolate this section's RNG stream
 cart_rows = []
 cart_id = 900000
 for p in plan:

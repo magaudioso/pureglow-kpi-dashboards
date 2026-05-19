@@ -210,14 +210,14 @@ def fmt(value, unit):
         return "n/a"
     if unit == "currency":
         if abs(value) >= 1_000_000:
-            return f"${value / 1_000_000:.2f}M"
+            return f"${value / 1_000_000:.1f}M"   # case precision: $7.1M
         if abs(value) >= 10_000:
             return f"${value / 1_000:.0f}K"
         return f"${value:,.2f}"
     if unit == "pct":
         return f"{value * 100:.1f}%"
     if unit == "ratio":
-        return f"{value:.2f}x"
+        return f"{value:.1f}x"                     # case precision: 4.3x
     if unit == "index":
         return f"{value:.0f}"
     if unit == "number":
@@ -232,7 +232,7 @@ def fmt_delta(delta, unit):
     if unit in ("pct",):
         return f"{arrow}{delta * 100:.1f} pts"
     if unit == "ratio":
-        return f"{arrow}{delta:.2f}x"
+        return f"{arrow}{delta:.1f}x"
     if unit == "index":
         return f"{arrow}{delta:.0f}"
     if unit == "currency":
