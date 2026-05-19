@@ -44,8 +44,11 @@ os.makedirs(RAW, exist_ok=True)
 os.makedirs(CONFIG, exist_ok=True)
 
 # ---------------------------------------------------------------- time window
-PHASE_START = date(2025, 12, 1)     # 6-month growth phase begins
-TODAY = date(2026, 5, 14)           # data is generated through "today"
+# 12-month implementation period from the case study (Schroeder, 2026):
+# starts April 2025 (the "before" state) and ends April 2026 (the case's
+# 12-month outcome snapshot - $7.1M annualised revenue, 4.3x ROAS, etc.).
+PHASE_START = date(2025, 4, 1)
+TODAY = date(2026, 4, 30)
 DATES = [PHASE_START + timedelta(d) for d in range((TODAY - PHASE_START).days + 1)]
 N = len(DATES)
 
@@ -107,12 +110,14 @@ LANDING_PAGES = [
 ]
 
 EMAIL_SEGMENTS = [
-    # (segment, open-rate start, open-rate end, ctr start, ctr end, sends/send-day start, end)
-    ("New Leads",        0.31, 0.345, 0.050, 0.060, 1500, 1950),
-    ("Cart Abandoners",  0.33, 0.360, 0.058, 0.070, 600,  820),
-    ("First-Time Buyers",0.30, 0.330, 0.047, 0.055, 900,  1150),
-    ("Lapsed Customers", 0.26, 0.300, 0.038, 0.048, 1100, 1250),
-    ("VIP Loyalists",    0.41, 0.450, 0.072, 0.085, 350,  470),
+    # (segment, open-rate start, end, ctr start, end, sends/send-day start, end)
+    # Segmented programme begins as a pilot and matures over the year to the
+    # case's 12-month outcome (31% open, 5.2% CTR blended across segments).
+    ("New Leads",        0.17, 0.32, 0.022, 0.058, 600,  1950),
+    ("Cart Abandoners",  0.18, 0.36, 0.025, 0.070, 200,  820),
+    ("First-Time Buyers",0.16, 0.31, 0.020, 0.052, 350,  1150),
+    ("Lapsed Customers", 0.13, 0.28, 0.018, 0.046, 450,  1250),
+    ("VIP Loyalists",    0.20, 0.42, 0.028, 0.080, 140,  470),
 ]
 
 TRAFFIC_SOURCES = [
@@ -142,40 +147,45 @@ for i, d in enumerate(DATES):
     t = i / (N - 1)
     wf = WEEKDAY_FACTOR[d.weekday()]
 
-    monthly_revenue = lerp(600_000, 720_000, t)          # finishing the doubling
+    # Endpoints chosen to land at the case's 12-month outcome data:
+    #   revenue 4.2M -> 7.1M (annualised), ROAS 1.8x -> 4.3x, CPA $34 -> $16.50,
+    #   L2C 2.1% -> 5.6%, cart recovery N/A -> 22%, email open 14% -> 31%.
+    # Hidden constraint that links everything: AOV = ROAS x CPA. At start
+    # 1.8 x 34 = $61.2; at end 4.3 x 16.5 = $70.95. So AOV lerps 61 -> 71.
+    monthly_revenue = lerp(350_000, 592_000, t)          # $4.2M -> $7.1M annualised
     revenue = monthly_revenue / 30.0 * wf * noise(0.07)
-    aov = lerp(70.0, 73.0, t) * noise(0.03)
+    aov = lerp(61.0, 71.0, t) * noise(0.03)
     orders = max(1, round(revenue / aov))
     revenue = round(orders * aov, 2)
 
-    roas_paid = lerp(4.31, 4.92, t) * noise(0.03)        # paid-search ROAS
-    paid_share = lerp(0.84, 0.87, t)                     # share of revenue from paid
+    roas_paid = lerp(1.80, 4.30, t) * noise(0.03)        # case before/after
+    paid_share = lerp(0.75, 0.85, t)                     # paid share grows with discipline
     paid_orders = max(1, round(orders * paid_share))
     paid_revenue = round(paid_orders * aov, 2)
     ad_spend = round(paid_revenue / roas_paid, 2)
 
-    returning_share = lerp(0.35, 0.42, t)
+    returning_share = lerp(0.12, 0.38, t)                # no retention -> mature programme
     returning_orders = round(orders * returning_share)
     new_customers = orders - returning_orders
     returning_revenue = round(returning_orders * aov, 2)
 
-    cpc = lerp(1.17, 1.05, t) * noise(0.04)
+    cpc = lerp(2.10, 1.05, t) * noise(0.04)              # broad keywords are expensive
     clicks = max(1, round(ad_spend / cpc))
-    ctr = lerp(0.0440, 0.0512, t) * noise(0.04)
+    ctr = lerp(0.0210, 0.0520, t) * noise(0.04)          # case's CTR target >=4.5%
     impressions = round(clicks / ctr)
 
-    leads = max(1, round(lerp(85, 112, t) * wf * noise(0.10)))
-    l2c = lerp(0.058, 0.075, t)
+    leads = max(1, round(lerp(55, 120, t) * wf * noise(0.10)))
+    l2c = lerp(0.021, 0.060, t)                          # case 2.1% -> 5.6%
     leads_converted = round(leads * l2c * noise(0.10))
 
-    carts = max(1, round(lerp(122, 150, t) * wf * noise(0.10)))
-    recovery_rate = lerp(0.205, 0.245, t) * noise(0.05)
+    carts = max(1, round(lerp(70, 150, t) * wf * noise(0.10)))
+    recovery_rate = lerp(0.000, 0.245, t) * noise(0.05)  # no programme -> 22% (case)
     carts_recovered = round(carts * recovery_rate)
 
-    clv_value = round(aov * lerp(1.84, 2.00, t) * 0.70, 2)   # AOV x freq x 70% margin
+    clv_value = round(aov * lerp(1.40, 2.05, t) * 0.70, 2)   # AOV x freq x 70% margin
 
-    nm_target = lerp(620_000, 740_000, t)                    # next-month revenue target
-    coverage = lerp(1.36, 1.72, t) * noise(0.04)
+    nm_target = lerp(370_000, 615_000, t)                    # next-month revenue target
+    coverage = lerp(1.10, 1.65, t) * noise(0.04)
     open_pipeline = round(coverage * nm_target, 2)
 
     plan.append(dict(
@@ -380,12 +390,13 @@ email_rows = []
 for p in plan:
     d = p["d"]
     t = p["t"]
-    # legacy batch-and-blast sends taper off across the phase (retiring it)
-    if random.random() < lerp(0.45, 0.04, t):
-        sends = round(lerp(18000, 9000, t) * noise(0.10))
+    # legacy batch-and-blast dominates early then tapers as segmented programme
+    # comes online (matches the case's batch-to-segmented transition).
+    if random.random() < lerp(0.90, 0.02, t):
+        sends = round(lerp(22000, 4000, t) * noise(0.10))
         delivered = round(sends * 0.975)
-        opens = round(delivered * lerp(0.165, 0.205, t) * noise(0.05))
-        clicks = round(delivered * lerp(0.020, 0.027, t) * noise(0.06))
+        opens = round(delivered * lerp(0.135, 0.175, t) * noise(0.05))   # case "before" 14%
+        clicks = round(delivered * lerp(0.017, 0.026, t) * noise(0.06))  # case "before" 1.8%
         email_rows.append([
             f"{d:%Y-%m-%d} Monthly Newsletter (Batch)", "Monthly news + featured products",
             "All contacts (batch)", d.strftime("%Y-%m-%d"), sends, delivered,

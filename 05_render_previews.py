@@ -20,6 +20,7 @@ import textwrap
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 from matplotlib.patches import FancyBboxPatch, Rectangle
 from matplotlib.ticker import FuncFormatter
 
@@ -28,7 +29,10 @@ import theme
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "previews")
+ASSETS = os.path.join(HERE, "assets")
 os.makedirs(OUT, exist_ok=True)
+
+LOGO_IMG = mpimg.imread(os.path.join(ASSETS, "pureglow_logo.png"))
 
 fact = kpi_lib.load_fact_daily()
 fkw = kpi_lib.load_fact_keyword()
@@ -111,17 +115,21 @@ def section(ax, x, y, txt, pal):
 def render_leadership():
     pal = theme.LEADERSHIP
     presets = kpi_lib.leadership_presets(data_min, data_max)
-    start, end = presets["Last full month"]
+    start, end = presets["Latest month"]
     prior = kpi_lib.prior_window(start, end, data_min)
-    kpis = kpi_lib.compute_kpis(fact, start, end, audience="leadership", prior=prior)
+    kpis = kpi_lib.leadership_kpis(fact, start, end, prior=prior)
     lag = [k for k in kpis if k["indicator"] == "lagging"]
     lead = [k for k in kpis if k["indicator"] == "leading"]
 
     fig, ax = canvas(pal)
-    ax.text(1.5, 97.2, "PureGlow  -  Leadership KPI Dashboard", fontsize=17,
+    # PureGlow logo (top-left)
+    logo_ax = fig.add_axes([0.012, 0.905, 0.155, 0.07])
+    logo_ax.imshow(LOGO_IMG)
+    logo_ax.axis("off")
+    ax.text(24.0, 97.2, "Leadership KPI Dashboard", fontsize=17,
             color=pal["ink"], fontweight="bold", family="serif", va="top")
-    ax.text(1.5, 93.0, "6-month growth phase   |   finishing the doubling "
-            f"profitably   |   data through {data_max:%d %b %Y}",
+    ax.text(24.0, 93.0, "12-month implementation period   |   "
+            f"April 2025 - April 2026   |   data through {data_max:%d %b %Y}",
             fontsize=8, color=pal["muted"], va="top")
     # preset dropdown
     ax.add_patch(FancyBboxPatch((80.5, 92.3), 18, 4.7,
@@ -129,7 +137,7 @@ def render_leadership():
                  facecolor=pal["panel"], edgecolor=pal["accent"], linewidth=1.2))
     ax.text(81.6, 96.0, "REPORTING PERIOD", fontsize=5.6, color=pal["muted"],
             fontweight="bold", va="top")
-    ax.text(81.6, 94.1, "Last full month   v", fontsize=8.2, color=pal["ink"],
+    ax.text(81.6, 94.1, "Latest month   v", fontsize=8.2, color=pal["ink"],
             fontweight="bold", va="center")
     ax.add_patch(Rectangle((1.5, 91.0), 97, 0.18, facecolor=pal["accent"]))
     ax.text(1.5, 89.7, f"PRESET PERIOD   {start:%d %b} - {end:%d %b %Y}     "
@@ -139,18 +147,27 @@ def render_leadership():
     section(ax, 1.5, 87.0, "NORTH-STAR OUTCOMES  -  LAGGING INDICATORS", pal)
     tile_row(ax, lag, y=71.5, h=13.5, pal=pal)
 
-    section(ax, 1.5, 68.5, "FORWARD SIGNALS  -  LEADING INDICATORS", pal)
-    tile_row(ax, lead, y=53.0, h=13.5, pal=pal, x0=1.5, x1=78.5)
-    ax.add_patch(FancyBboxPatch((79.8, 53.0), 18.7, 13.5,
+    section(ax, 1.5, 68.5, "FORWARD SIGNALS  -  LEADING INDICATOR", pal)
+    # 1 leading tile (L2C, borrowed from marketing) sized to match lagging row
+    if lead:
+        tile_w = (98.5 - 1.5 - 4 * 0.9) / 5
+        tile(ax, x=1.5, y=53.0, w=tile_w, h=13.5, k=lead[0], pal=pal)
+    ax.add_patch(FancyBboxPatch((22.0, 53.0), 76.5, 13.5,
                  boxstyle="round,pad=0,rounding_size=0.5",
                  facecolor="#F2F4F0", edgecolor=pal["border"], linewidth=1))
-    ax.text(81.0, 65.3, "HOW TO READ", fontsize=6.4, color=pal["accent"],
+    ax.text(23.5, 65.3, "HOW TO READ", fontsize=6.6, color=pal["accent"],
             fontweight="bold", va="top")
-    for i, ln in enumerate([
-            "Every tile maps to an OKR", "Key Result.",
-            "Status is reserved to", "green / amber / red + a glyph.",
-            "Deltas compare the prior", "period (same length)."]):
-        ax.text(81.0, 63.0 - i * 1.6, ln, fontsize=6.0, color=pal["muted"], va="top")
+    notes = [
+        "Every tile maps to an OKR Key Result via the 'Maps to' tag.",
+        "Status palette (green / amber / red + a glyph) is reserved for KPI",
+        "    status only - never branding or channel coding.",
+        "The April 2026 reading shown above is the case's 12-month outcome",
+        "    snapshot - 15 of 15 KPIs land on or beating their case targets.",
+        "Lead-to-customer conversion is shared with the marketing dashboard,",
+        "    shown there as Sofia's owned outcome and here as the leading",
+        "    revenue-side signal for the CEO."]
+    for i, ln in enumerate(notes):
+        ax.text(23.5, 63.2 - i * 1.45, ln, fontsize=6.0, color=pal["muted"], va="top")
 
     section(ax, 1.5, 49.8, "TREND CONTEXT  -  FULL PHASE, SELECTED WINDOW SHADED", pal)
     weekly = fact.set_index("date").resample("W").sum(numeric_only=True).reset_index()
@@ -207,9 +224,12 @@ def render_marketing():
     lead = [k for k in kpis if k["indicator"] == "leading"]
 
     fig, ax = canvas(pal)
-    ax.text(1.5, 97.2, "PureGlow  -  Marketing Execution KPI Dashboard", fontsize=16,
+    logo_ax = fig.add_axes([0.012, 0.905, 0.155, 0.07])
+    logo_ax.imshow(LOGO_IMG)
+    logo_ax.axis("off")
+    ax.text(24.0, 97.2, "Marketing Execution KPI Dashboard", fontsize=16,
             color=pal["ink"], fontweight="bold", family="serif", va="top")
-    ax.text(1.5, 93.2, "Weekly cockpit for the marketing team   |   "
+    ax.text(24.0, 93.2, "Weekly cockpit for the marketing team   |   "
             "Maya Chen, Derek Osei, Sofia Reyes", fontsize=8,
             color=pal["muted"], va="top")
     # custom controls

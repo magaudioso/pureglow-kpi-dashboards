@@ -13,20 +13,24 @@ Run:  streamlit run 04_dashboard_marketing.py
 ================================================================================
 """
 import datetime as dt
+import os
 
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
+from PIL import Image
 
 import kpi_lib
 import theme
 
 P = theme.MARKETING
-FREQ = {"Daily": "D", "Weekly": "W", "Monthly": "ME"}
-PERIOD_FREQ = {"D": "D", "W": "W", "ME": "M"}
+FREQ = {"Daily": "D", "Weekly": "W", "Monthly": "M"}
+ASSETS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
+ICON = Image.open(os.path.join(ASSETS, "pureglow_icon.png"))
+LOGO = os.path.join(ASSETS, "pureglow_logo.png")
 
 st.set_page_config(page_title="PureGlow - Marketing Execution Dashboard",
-                   page_icon="*", layout="wide",
+                   page_icon=ICON, layout="wide",
                    initial_sidebar_state="collapsed")
 st.markdown(theme.streamlit_css(P, dense=True), unsafe_allow_html=True)
 
@@ -37,9 +41,12 @@ fem = kpi_lib.load_fact_email()
 data_min, data_max = kpi_lib.data_bounds(fact)
 
 # ---------------------------------------------------------------- header + controls
-bcol, dcol, gcol = st.columns([2.6, 1.7, 1.5], vertical_alignment="center")
-with bcol:
-    st.markdown(theme.brand_header_html(P, "Marketing Execution Dashboard"),
+lcol, mcol, dcol, gcol = st.columns([1.1, 2.4, 1.5, 1.2],
+                                    vertical_alignment="center")
+with lcol:
+    st.image(LOGO, width=190)
+with mcol:
+    st.markdown("<div class='pg-title'>Marketing Execution Dashboard</div>",
                 unsafe_allow_html=True)
 with dcol:
     default_start = max(data_min, data_max - dt.timedelta(days=29))
@@ -53,23 +60,25 @@ with dcol:
 with gcol:
     gran = st.radio("Granularity", list(FREQ.keys()), index=1,
                     horizontal=True, label_visibility="collapsed")
+st.markdown("<hr class='pg-rule'>", unsafe_allow_html=True)
 
 freq = FREQ[gran]
-st.markdown("<hr class='pg-rule'>", unsafe_allow_html=True)
 prior = kpi_lib.prior_window(start, end, data_min)
 kpis = kpi_lib.compute_kpis(fact, start, end, audience="marketing", prior=prior)
+
+st.markdown(theme.status_rollup_html(kpis), unsafe_allow_html=True)
 
 # ---------------------------------------------------------------- tiles
 st.markdown("<div class='pg-section'>Lagging indicators</div>",
             unsafe_allow_html=True)
 lag = [k for k in kpis if k["indicator"] == "lagging"]
-for col, k in zip(st.columns(len(lag)), lag):
+for col, k in zip(st.columns(max(len(lag), 1)), lag):
     col.markdown(theme.tile_html(k), unsafe_allow_html=True)
 
 st.markdown("<div class='pg-section'>Leading indicators</div>",
             unsafe_allow_html=True)
 lead = [k for k in kpis if k["indicator"] == "leading"]
-for col, k in zip(st.columns(len(lead)), lead):
+for col, k in zip(st.columns(max(len(lead), 1)), lead):
     col.markdown(theme.tile_html(k), unsafe_allow_html=True)
 
 st.markdown("<hr class='pg-rule'>", unsafe_allow_html=True)
@@ -81,10 +90,11 @@ def in_range(df):
 
 def fig(title, height=250):
     f = go.Figure()
-    f.update_layout(**theme.plotly_layout(P),
+    layout = theme.plotly_layout(P)
+    layout["margin"] = dict(l=48, r=18, t=44, b=28)
+    f.update_layout(**layout,
                     title=dict(text=title, x=0, y=0.95,
-                               font=dict(size=15, color=P["ink"])),
-                    margin=dict(l=48, r=18, t=46, b=30),
+                               font=dict(size=14, color=P["ink"])),
                     height=height)
     return f
 
@@ -111,7 +121,7 @@ with tab_paid:
                                     tickprefix="$", showgrid=False))
         f.add_hline(y=1.20, line=dict(color=theme.STATUS["watch"]["color"], dash="dot"),
                     yref="y2", annotation_text="CPC target $1.20", annotation_font_size=9)
-        st.plotly_chart(f, width="stretch")
+        st.plotly_chart(f, width="stretch", theme=None)
     with b:
         f = fig(f"Click-through rate ({gran.lower()})")
         f.add_trace(go.Scatter(x=g["date"], y=g["ctr"], name="CTR", mode="lines+markers",
@@ -119,7 +129,7 @@ with tab_paid:
         f.add_hline(y=0.045, line=dict(color=theme.STATUS["on_track"]["color"], dash="dash"),
                     annotation_text="Target 4.5%", annotation_font_size=9)
         f.update_yaxes(tickformat=".1%")
-        st.plotly_chart(f, width="stretch")
+        st.plotly_chart(f, width="stretch", theme=None)
 
     st.markdown("<div class='pg-section'>Keyword intent tiers</div>",
                 unsafe_allow_html=True)
@@ -140,8 +150,8 @@ with tab_paid:
     cv = k[k["is_crm_verified"]]["cost"].sum() / tot
     st.markdown(
         f"<div class='pg-sub'>High-intent share <b>{hi*100:.1f}%</b> "
-        f"(target &ge; 75%) &nbsp;·&nbsp; "
-        f"CRM-verified <b>{cv*100:.1f}%</b> (target &ge; 70%)</div>",
+        f"(target &ge; 75%) &nbsp;·&nbsp; CRM-verified "
+        f"<b>{cv*100:.1f}%</b> (target &ge; 70%)</div>",
         unsafe_allow_html=True)
 
 # ============================================================ EMAIL / CRM
@@ -157,7 +167,7 @@ with tab_email:
     with a:
         f = fig(f"Open rate by segment ({gran.lower()})")
         eg = e.copy()
-        eg["bucket"] = eg["date"].dt.to_period(PERIOD_FREQ[freq]).dt.to_timestamp()
+        eg["bucket"] = eg["date"].dt.to_period(freq).dt.to_timestamp()
         for s in sorted(eg["segment"].unique()):
             sub = (eg[eg["segment"] == s].groupby("bucket", as_index=False)
                    [["opens", "delivered"]].sum())
@@ -167,7 +177,7 @@ with tab_email:
         f.add_hline(y=0.28, line=dict(color=theme.STATUS["on_track"]["color"], dash="dash"),
                     annotation_text="Target 28%", annotation_font_size=9)
         f.update_yaxes(tickformat=".0%")
-        st.plotly_chart(f, width="stretch")
+        st.plotly_chart(f, width="stretch", theme=None)
     with b:
         seg_show = seg.copy()
         seg_show["Open rate"] = (seg_show["Open rate"] * 100).round(1).astype(str) + "%"
@@ -183,10 +193,11 @@ with tab_email:
     gstatus = theme.STATUS["on_track"] if seg_share >= 0.99 else (
         theme.STATUS["watch"] if seg_share >= 0.9 else theme.STATUS["off_track"])
     st.markdown(
-        f"<div class='pg-sub'>Segmented send share <b>{seg_share*100:.1f}%</b> "
+        f"<div class='pg-sub'>Operational guardrail &mdash; "
+        f"<b>{seg_share*100:.1f}%</b> of email volume sent as segmented campaigns "
         f"<span style='color:{gstatus['color']};font-weight:700;'>"
-        f"{gstatus['glyph']} {gstatus['label']}</span> &nbsp;·&nbsp; target 100%.</div>",
-        unsafe_allow_html=True)
+        f"{gstatus['glyph']} {gstatus['label']}</span> (target 100% &mdash; "
+        f"retiring batch-and-blast).</div>", unsafe_allow_html=True)
 
 # ============================================================ LANDING PAGES
 with tab_lp:
@@ -210,7 +221,7 @@ with tab_lp:
         f.add_vline(x=0.045, line=dict(color=P["accent"], dash="dash"),
                     annotation_text="Target 4.5%", annotation_font_size=9)
         f.update_xaxes(tickformat=".1%")
-        st.plotly_chart(f, width="stretch")
+        st.plotly_chart(f, width="stretch", theme=None)
     with b:
         lp_show = lp.sort_values("Sessions", ascending=False).copy()
         lp_show["Conv. rate"] = (lp_show["Conv. rate"] * 100).round(2).astype(str) + "%"

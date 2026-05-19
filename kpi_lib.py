@@ -26,13 +26,13 @@ CONFIG_DIR = os.path.join(HERE, "config")
 # Every target and planning number lives here. Re-baseline in Month 1 by
 # editing this block - no dashboard or ETL logic has to change.
 CONFIG = {
-    "phase_start":              dt.date(2025, 12, 1),
-    "phase_end":                dt.date(2026, 5, 31),
-    "data_through":             dt.date(2026, 5, 14),
-    "revenue_runrate_target":   8_400_000,   # KR 1.1 - completes the doubling
-    "monthly_revenue_target":   700_000,     # used for pipeline-coverage denominator
-    "weekly_new_customer_plan": 1_250,       # pace needed for the run-rate target
-    "gross_margin":             0.70,        # CLV assumption (see doc Part 6)
+    "phase_start":              dt.date(2025, 4, 1),    # implementation kick-off
+    "phase_end":                dt.date(2026, 4, 30),   # case's 12-month outcome point
+    "data_through":             dt.date(2026, 4, 30),
+    "revenue_runrate_target":   7_100_000,   # case 12-month outcome (annualised)
+    "monthly_revenue_target":   592_000,     # = $7.1M / 12
+    "weekly_new_customer_plan": 1_200,       # implied by the run-rate target
+    "gross_margin":             0.70,        # CLV / Day-30 payback assumption
     "runrate_window_days":      90,          # trailing window for the run-rate
 }
 
@@ -41,114 +41,90 @@ CONFIG = {
 # direction: "higher" (more is better) | "lower" (less is better)
 # unit: "currency" | "pct" | "ratio" | "index" | "number"
 CATALOG = [
-    # ---- Leadership - lagging -------------------------------------------------
+    # ---- Leadership  (5 lagging - all outcome-level)
     dict(id="LEAD_REVENUE_RR", name="Online revenue (annualised run-rate)",
          audience="leadership", indicator="lagging", owner="CEO / Maya Chen",
          maps_to="O1 - KR 1.1", target=CONFIG["revenue_runrate_target"],
          direction="higher", unit="currency", is_new=False,
-         desc="Trailing-90-day online revenue, annualised. Target completes the "
-              "CEO's doubling mandate."),
+         desc="Trailing-90-day online revenue, annualised. Year-1 milestone toward "
+              "the CEO's 18-month doubling mandate."),
     dict(id="LEAD_ROAS", name="Blended ROAS",
          audience="leadership", indicator="lagging", owner="Maya Chen",
          maps_to="O1 - KR 1.2", target=4.0, direction="higher", unit="ratio",
          is_new=False,
-         desc="Total online revenue divided by total ad spend."),
-    dict(id="LEAD_CPA", name="Blended CPA (cost per order)",
-         audience="leadership", indicator="lagging", owner="Maya Chen",
-         maps_to="O2 - KR 2.3", target=15.0, direction="lower", unit="currency",
-         is_new=False,
-         desc="Total ad spend divided by all orders (paid + organic + returning)."),
+         desc="Total online revenue divided by total ad spend. Case target floor."),
     dict(id="LEAD_CLV", name="Customer lifetime value (CLV index)",
          audience="leadership", indicator="lagging", owner="Maya Chen",
-         maps_to="O3 - KR 3.2", target=108.0, direction="higher", unit="index",
+         maps_to="O3 - KR 3.3", target=115.0, direction="higher", unit="index",
          is_new=False,
-         desc="CLV indexed to the phase start (=100). Target is +8% over the phase."),
+         desc="CLV indexed to phase start (=100). Case target is +15% YoY."),
     dict(id="LEAD_RET_REV", name="Returning-customer revenue share",
          audience="leadership", indicator="lagging", owner="Sofia Reyes",
-         maps_to="O3 - KR 3.3", target=0.40, direction="higher", unit="pct",
+         maps_to="O3 - KR 3.2", target=0.35, direction="higher", unit="pct",
          is_new=True,
-         desc="Share of revenue from customers placing their 2nd+ order. NEW metric."),
+         desc="Share of revenue from customers placing their 2nd+ order. NEW metric "
+              "extending the case framework toward a retention KPI."),
     dict(id="LEAD_D30_PAYBACK", name="Day-30 gross-profit payback on CAC",
          audience="leadership", indicator="lagging", owner="CEO / Maya Chen",
          maps_to="O1 - KR 1.3", target=1.0, direction="higher", unit="ratio",
          is_new=True,
          desc="For new customers acquired in the period, gross profit earned in "
               "their first 30 days divided by total acquisition spend. Hormozi's "
-              "self-funding-growth threshold (1.0x means a cohort pays back its CAC "
-              "in gross profit within 30 days). NEW metric."),
-    # ---- Leadership - leading ------------------------------------------------
-    dict(id="LEAD_PIPE_COV", name="Pipeline coverage ratio",
-         audience="leadership", indicator="leading", owner="Maya Chen",
-         maps_to="O1 - KR 1.1", target=1.5, direction="higher", unit="ratio",
-         is_new=True,
-         desc="Open pipeline value divided by the monthly revenue target. NEW metric."),
-    dict(id="LEAD_L2C", name="Lead-to-customer conversion rate",
-         audience="leadership", indicator="leading", owner="Sofia Reyes",
-         maps_to="O2 - KR 2.2", target=0.07, direction="higher", unit="pct",
-         is_new=False,
-         desc="New customers divided by new leads. Leadership's revenue early-warning."),
-    dict(id="LEAD_NEWCUST_PACE", name="Weekly new-customer run-rate vs plan",
-         audience="leadership", indicator="leading", owner="Maya Chen",
-         maps_to="O1 - KR 1.1", target=1.0, direction="higher", unit="pct",
-         is_new=False,
-         desc="Actual weekly new customers divided by the planned weekly pace."),
-    dict(id="LEAD_CRM_SPEND", name="% ad spend on CRM-verified keywords",
-         audience="leadership", indicator="leading", owner="Derek Osei",
-         maps_to="O1 - KR 1.2", target=0.70, direction="higher", unit="pct",
-         is_new=True,
-         desc="Share of paid spend on keywords confirmed profitable in the CRM. NEW metric."),
-    # ---- Marketing - lagging -------------------------------------------------
+              "1.0x self-funding-growth threshold. NEW metric."),
+
+    # ---- Marketing  (5 lagging + 5 leading)
     dict(id="MKT_CPA", name="Cost per acquisition (CPA) - paid search",
          audience="marketing", indicator="lagging", owner="Derek Osei",
-         maps_to="O2 - KR 2.3", target=15.0, direction="lower", unit="currency",
+         maps_to="O1 - KR 1.3", target=18.0, direction="lower", unit="currency",
          is_new=False,
-         desc="Paid-search spend divided by GCLID-attributed orders."),
+         desc="Paid-search spend divided by GCLID-attributed orders. Case target <=$18."),
     dict(id="MKT_ROAS", name="Return on ad spend (ROAS) - paid search",
          audience="marketing", indicator="lagging", owner="Derek Osei",
          maps_to="O1 - KR 1.2", target=4.0, direction="higher", unit="ratio",
          is_new=False,
-         desc="GCLID-attributed revenue divided by paid-search spend."),
+         desc="GCLID-attributed revenue divided by paid-search spend. Case target >=4.0x."),
     dict(id="MKT_LP_CONV", name="Landing page conversion rate",
          audience="marketing", indicator="lagging", owner="Derek Osei",
-         maps_to="O2 - KR 2.1", target=0.045, direction="higher", unit="pct",
+         maps_to="O2 - KR 2.1", target=0.035, direction="higher", unit="pct",
          is_new=False,
-         desc="Landing-page conversions divided by landing-page sessions (GA4)."),
+         desc="Landing-page conversions divided by sessions (GA4). Case target >=3.5%."),
     dict(id="MKT_L2C", name="Lead-to-customer conversion rate",
          audience="marketing", indicator="lagging", owner="Sofia Reyes",
-         maps_to="O2 - KR 2.2", target=0.07, direction="higher", unit="pct",
+         maps_to="O2 - KR 2.2", target=0.05, direction="higher", unit="pct",
          is_new=False,
-         desc="New customers divided by new leads (HubSpot lifecycle stages)."),
+         desc="New customers divided by new leads (HubSpot lifecycle stages). "
+              "Case target >=5%. Shared with the leadership view as a leading signal."),
     dict(id="MKT_CART", name="Cart recovery rate",
          audience="marketing", indicator="lagging", owner="Sofia Reyes",
-         maps_to="O2 - KR 2.2", target=0.20, direction="higher", unit="pct",
+         maps_to="O2 - KR 2.3", target=0.20, direction="higher", unit="pct",
          is_new=False,
-         desc="Recovered carts divided by abandoned carts."),
-    # ---- Marketing - leading -------------------------------------------------
+         desc="Recovered carts divided by abandoned carts. Case target >=20%."),
     dict(id="MKT_CPC", name="Cost per click (CPC)",
          audience="marketing", indicator="leading", owner="Derek Osei",
-         maps_to="O2 - KR 2.3", target=1.20, direction="lower", unit="currency",
+         maps_to="O1 - KR 1.3", target=1.20, direction="lower", unit="currency",
          is_new=False,
-         desc="Paid-search cost divided by clicks."),
+         desc="Paid-search cost divided by clicks. Case target <=$1.20."),
     dict(id="MKT_CTR", name="Click-through rate (CTR) - paid search",
          audience="marketing", indicator="leading", owner="Derek Osei",
          maps_to="O2 - KR 2.1", target=0.045, direction="higher", unit="pct",
          is_new=False,
-         desc="Paid-search clicks divided by impressions."),
-    dict(id="MKT_HIGH_INTENT", name="% ad spend on high-intent (Tier 1 & 2) keywords",
+         desc="Paid-search clicks divided by impressions. Case target >=4.5%."),
+    dict(id="MKT_HIGH_INTENT", name="% ad spend on high-intent (Tier 1 + 2) keywords",
          audience="marketing", indicator="leading", owner="Derek Osei",
          maps_to="O1 - KR 1.2", target=0.75, direction="higher", unit="pct",
          is_new=True,
-         desc="Share of paid spend on Tier 1 + Tier 2 keywords. NEW metric."),
+         desc="Share of paid spend on Tier 1 + Tier 2 keywords. Operationalises "
+              "Decision 6 keyword discipline. NEW metric."),
     dict(id="MKT_EMAIL_OPEN", name="Email open rate",
          audience="marketing", indicator="leading", owner="Sofia Reyes",
-         maps_to="O2 - KR 2.2", target=0.28, direction="higher", unit="pct",
+         maps_to="O3 - KR 3.1", target=0.28, direction="higher", unit="pct",
          is_new=False,
-         desc="Email opens divided by emails delivered."),
+         desc="Opens divided by delivered (segmented campaigns). Case target >=28%."),
     dict(id="MKT_EMAIL_CTR", name="Email click-through rate",
          audience="marketing", indicator="leading", owner="Sofia Reyes",
-         maps_to="O2 - KR 2.2", target=0.045, direction="higher", unit="pct",
+         maps_to="O3 - KR 3.1", target=0.045, direction="higher", unit="pct",
          is_new=False,
-         desc="Email clicks divided by emails delivered."),
+         desc="Clicks divided by delivered (segmented campaigns). Case target >=4.5%."),
 ]
 CATALOG_BY_ID = {k["id"]: k for k in CATALOG}
 
@@ -200,17 +176,16 @@ def leadership_presets(data_min, data_max):
     """Return {label: (start, end)} - the executive period dropdown."""
     end = data_max
     presets = {}
-    # this month to date
-    presets["This month to date"] = (end.replace(day=1), end)
-    # last full month
-    first_this = end.replace(day=1)
-    last_prev_end = first_this - dt.timedelta(days=1)
-    presets["Last full month"] = (last_prev_end.replace(day=1), last_prev_end)
-    # this quarter to date
-    q_first_month = 1 + 3 * ((end.month - 1) // 3)
-    presets["This quarter to date"] = (dt.date(end.year, q_first_month, 1), end)
-    # full growth phase
-    presets["Full growth phase (6 mo)"] = (data_min, end)
+    # latest full month (default - this is the case 'outcome month')
+    presets["Latest month"] = (end.replace(day=1), end)
+    # last 90 days - the trailing window that drives the run-rate
+    presets["Last 90 days"] = (max(end - dt.timedelta(days=89), data_min), end)
+    # calendar YTD
+    presets["Year to date"] = (max(dt.date(end.year, 1, 1), data_min), end)
+    # second half - the maturation period
+    presets["Last 6 months"] = (max(end - dt.timedelta(days=182), data_min), end)
+    # the whole 12-month implementation window
+    presets["Full implementation period"] = (data_min, end)
     return presets
 
 
@@ -309,54 +284,41 @@ def _raw_kpi_values(df_period, df_full):
     weeks = max(period_days / 7.0, 1e-9)
 
     v = {}
-    # leadership lagging
+    # ---- leadership lagging (5)
     v["LEAD_REVENUE_RR"] = _runrate(df_full, end)
     v["LEAD_ROAS"] = _safe_div(p["revenue"], p["ad_spend"])
-    v["LEAD_CPA"] = _safe_div(p["ad_spend"], p["orders"])
     base_clv = df_full.sort_values("date")["clv_value"].head(7).mean()
     end_clv = df_period.sort_values("date")["clv_value"].tail(7).mean()
     v["LEAD_CLV"] = _safe_div(end_clv, base_clv) * 100.0
     v["LEAD_RET_REV"] = _safe_div(p["returning_revenue"], p["revenue"])
-    # Day-30 gross-profit payback on CAC - cohort metric with 30-day maturity lag.
-    # For new customers whose first order falls in the mature sub-window of the
-    # period, sum their first-30-day gross profit and divide by ad spend on the
-    # same window. (Hormozi's self-funding-growth threshold is 1.0x.)
+    # Day-30 gross-profit payback on CAC - cohort metric, 30-day maturity lag.
+    # If the period has too few mature days, fall back to the trailing 30 mature days.
     data_max = df_full["date"].max()
-    mature_cut = data_max - pd.Timedelta(days=30)
-    mat = df_period[df_period["date"] <= mature_cut]
-    if len(mat) < 14:
-        lo = mature_cut - pd.Timedelta(days=29)
-        mat = df_full[(df_full["date"] >= lo) & (df_full["date"] <= mature_cut)]
-    v["LEAD_D30_PAYBACK"] = _safe_div(mat["cohort_d30_gp"].sum(),
-                                      mat["ad_spend"].sum())
-    # leadership leading
-    v["LEAD_PIPE_COV"] = _safe_div(df_period.iloc[-1]["open_pipeline_value"],
-                                   CONFIG["monthly_revenue_target"])
-    # Lead-to-customer is cohort-based and has a conversion lag, so leads created
-    # in the last ~12 days are not yet mature. Measure only mature cohorts; if the
-    # period has too few mature days, fall back to the trailing 30 mature days.
-    data_max = df_full["date"].max()
-    mature_cut = data_max - pd.Timedelta(days=12)
-    mat = df_period[df_period["date"] <= mature_cut]
-    if len(mat) < 14:
-        lo = mature_cut - pd.Timedelta(days=29)
-        mat = df_full[(df_full["date"] >= lo) & (df_full["date"] <= mature_cut)]
-    v["LEAD_L2C"] = _safe_div(mat["leads_converted"].sum(), mat["leads_created"].sum())
-    v["LEAD_NEWCUST_PACE"] = _safe_div(p["new_customers"] / weeks,
-                                       CONFIG["weekly_new_customer_plan"])
-    v["LEAD_CRM_SPEND"] = _safe_div(p["spend_crm_verified"], p["ad_spend"])
-    # marketing lagging
+    cut30 = data_max - pd.Timedelta(days=30)
+    mat30 = df_period[df_period["date"] <= cut30]
+    if len(mat30) < 14:
+        lo = cut30 - pd.Timedelta(days=29)
+        mat30 = df_full[(df_full["date"] >= lo) & (df_full["date"] <= cut30)]
+    v["LEAD_D30_PAYBACK"] = _safe_div(mat30["cohort_d30_gp"].sum(),
+                                      mat30["ad_spend"].sum())
+    # ---- marketing lagging (5)
     v["MKT_CPA"] = _safe_div(p["ad_spend"], p["paid_orders"])
     v["MKT_ROAS"] = _safe_div(p["paid_revenue"], p["ad_spend"])
     v["MKT_LP_CONV"] = _safe_div(p["lp_conversions"], p["sessions"])
-    v["MKT_L2C"] = v["LEAD_L2C"]
+    # Lead-to-customer is cohort-based with a ~12-day conversion lag.
+    cut12 = data_max - pd.Timedelta(days=12)
+    mat12 = df_period[df_period["date"] <= cut12]
+    if len(mat12) < 14:
+        lo = cut12 - pd.Timedelta(days=29)
+        mat12 = df_full[(df_full["date"] >= lo) & (df_full["date"] <= cut12)]
+    v["MKT_L2C"] = _safe_div(mat12["leads_converted"].sum(),
+                             mat12["leads_created"].sum())
     v["MKT_CART"] = _safe_div(p["carts_recovered"], p["carts_created"])
-    # marketing leading
+    # ---- marketing leading (5)
     v["MKT_CPC"] = _safe_div(p["ad_spend"], p["clicks"])
     v["MKT_CTR"] = _safe_div(p["clicks"], p["impressions"])
     v["MKT_HIGH_INTENT"] = _safe_div(p["spend_high_intent"], p["ad_spend"])
-    # email open / CTR measure the segmented lifecycle programme (the legacy
-    # batch-and-blast sends being retired are tracked by the % segmented guardrail)
+    # email open / CTR measure the segmented lifecycle programme
     v["MKT_EMAIL_OPEN"] = _safe_div(p["emails_opened_segmented"],
                                     p["emails_delivered_segmented"])
     v["MKT_EMAIL_CTR"] = _safe_div(p["emails_clicked_segmented"],
@@ -396,6 +358,21 @@ def compute_kpis(df_full, start, end, audience=None, prior=None):
             "status": status_key(val, k["target"], k["direction"]),
         })
     return out
+
+
+def leadership_kpis(df_full, start, end, prior=None):
+    """Leadership tiles - the 5 leadership-lagging metrics plus a borrowed
+    lead-to-customer tile shown as the leading indicator. (L2C is owned by
+    Sofia on the marketing dashboard, but it's the CEO's revenue early-warning.)
+    """
+    lead = compute_kpis(df_full, start, end, audience="leadership", prior=prior)
+    mkt = compute_kpis(df_full, start, end, audience="marketing", prior=prior)
+    l2c = next((k for k in mkt if k["id"] == "MKT_L2C"), None)
+    if l2c:
+        l2c = dict(l2c)
+        l2c["indicator"] = "leading"   # render in the leading section
+        lead.append(l2c)
+    return lead
 
 
 def kpi_timeseries(df_full, kpi_id, freq="W", start=None, end=None):
